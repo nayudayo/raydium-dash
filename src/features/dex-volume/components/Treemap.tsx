@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { useDexData, TreemapData } from '../hooks/useDexData';
+import { useDexData } from '../hooks/useDexData';
+import { TreemapData } from '../types';
 
 // Extended type for D3 hierarchy nodes with treemap layout properties
 interface TreemapNode extends d3.HierarchyNode<TreemapData> {

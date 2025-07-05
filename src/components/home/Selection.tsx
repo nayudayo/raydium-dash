@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useMemo, useEffect } from "react";
+import Image from "next/image"
 import { gsap } from "gsap";
 
 // Register GSAP
@@ -50,10 +51,12 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items = defaultItems }) => {
     <div className="w-full h-full overflow-hidden relative">
       {/* Raydium logo watermark */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'forwards' }}>
-        <img 
+        <Image 
           src="/assets/logo/raydium.svg" 
           alt="Raydium Logo" 
-          className="w-128 h-128 object-contain opacity-10"
+          width={512}
+          height={512}
+          className="object-contain opacity-10"
         />
       </div>
       

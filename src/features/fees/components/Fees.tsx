@@ -1,117 +1,91 @@
 "use client"
 
 import * as React from "react"
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip, Cell, LabelList } from "recharts"
+import Image from "next/image"
+import { Line, LineChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from "recharts"
 import { useFeesData } from "../hooks/useFeesData"
 
 interface TooltipProps {
   active?: boolean;
   payload?: Array<{
     value: number;
+    name: string;
+    color: string;
     payload: {
-      name: string;
-      fees24h: number;
-      fees7d: number;
-      fees30d: number;
-      displayName: string;
-      isRaydium: boolean;
+      period: string;
+      [key: string]: number | string;
     };
   }>;
-}
-
-interface ChartData {
-  name: string;
-  fees24h: number;
-  fees7d: number;
-  fees30d: number;
-  displayName: string;
-  isRaydium: boolean;
-}
-
-interface BarClickData {
-  name: string;
-  fees24h: number;
-  fees7d: number;
-  fees30d: number;
-  displayName: string;
-  isRaydium: boolean;
-}
-
-interface LabelProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  payload?: {
-    name: string;
-    fees24h: number;
-    fees7d: number;
-    fees30d: number;
-    displayName: string;
-    isRaydium: boolean;
-  };
+  label?: string;
 }
 
 export const Fees = () => {
-  const { data, loading, error, getChartData } = useFeesData()
-  const [activeChart, setActiveChart] = React.useState<"fees24h" | "fees7d" | "fees30d">("fees24h")
-  const [hoveredBar, setHoveredBar] = React.useState<number | null>(null)
-  const [selectedProtocol, setSelectedProtocol] = React.useState<string | null>(null)
+  const { data, loading, error, getTopProtocols } = useFeesData()
+  const [selectedProtocols, setSelectedProtocols] = React.useState<string[]>([])
 
-  // Always call useMemo, even if data is null
-  const total = React.useMemo(
-    () => ({
-      fees24h: data?.totalFees24h || 0,
-      fees7d: data?.totalFees7d || 0,
-      fees30d: data?.totalFees30d || 0,
-    }),
-    [data]
-  )
+  // Transform data for line chart - each protocol becomes a line across time periods
+  const lineChartData = React.useMemo(() => {
+    if (!data) return []
+    
+    const topProtocols = getTopProtocols(8) // Limit to 8 protocols for readability
+    
+    return [
+      {
+        period: '24h',
+        ...topProtocols.reduce((acc, protocol) => {
+          acc[protocol.name] = protocol.total24h
+          return acc
+        }, {} as Record<string, number>)
+      },
+      {
+        period: '7d',
+        ...topProtocols.reduce((acc, protocol) => {
+          acc[protocol.name] = protocol.total7d
+          return acc
+        }, {} as Record<string, number>)
+      },
+      {
+        period: '30d',
+        ...topProtocols.reduce((acc, protocol) => {
+          acc[protocol.name] = protocol.total30d
+          return acc
+        }, {} as Record<string, number>)
+      }
+    ]
+  }, [data, getTopProtocols])
 
-  const chartData = React.useMemo(
-    () => data ? getChartData(20) : [],
-    [data, getChartData]
-  )
+  const topProtocols = React.useMemo(() => data ? getTopProtocols(8) : [], [data, getTopProtocols])
+
+  // Generate colors for each protocol
+  const getProtocolColor = (protocolName: string, index: number) => {
+    if (protocolName.toLowerCase().includes('raydium')) {
+      return "#F7F3E9"
+    }
+    const colors = ["#3772FF", "#5AC4BE", "#C200FB", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"]
+    return colors[index % colors.length]
+  }
 
   // Custom tooltip component
-  const CustomTooltip = ({ active, payload }: TooltipProps) => {
+  const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
     if (active && payload && payload.length) {
-      const data = payload[0].payload
-      const value = payload[0].value
-      const isRaydium = data.isRaydium
-      
       return (
-        <div className={`backdrop-blur-sm rounded-lg p-4 shadow-xl ${
-          isRaydium 
-            ? 'bg-gradient-to-r from-[#C200FB]/20 via-[#3772FF]/20 to-[#5AC4BE]/20 border-2 border-[#5AC4BE]/50' 
-            : 'bg-gray-900/95 border border-gray-700'
-        }`}>
-          <h3 className={`font-bold mb-2 ${isRaydium ? 'text-[#F7F3E9]' : 'text-white'}`}>
-            {data.name}
-          </h3>
+        <div className="backdrop-blur-sm rounded-lg p-4 shadow-xl bg-gray-900/95 border border-gray-700">
+          <h3 className="font-bold mb-2 text-white">{label} Fees</h3>
           <div className="space-y-1">
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm">
-                {activeChart === "fees24h" ? "24h Fees:" : activeChart === "fees7d" ? "7d Fees:" : "30d Fees:"}
-              </span>
-              <span className="text-white font-semibold">${(value / 1000000).toFixed(1)}M</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-400 text-sm">Market Share:</span>
-              <span className="text-[#5AC4BE] font-semibold">
-                {((value / total[activeChart]) * 100).toFixed(2)}%
-              </span>
-            </div>
-            {data.fees24h !== data.fees7d && (
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 text-sm">
-                  {activeChart === "fees24h" ? "7d Fees:" : "24h Fees:"}
+            {payload.map((entry, index) => (
+              <div key={index} className="flex justify-between items-center">
+                <span className="text-gray-400 text-sm flex items-center">
+                  <div 
+                    className="w-3 h-3 rounded-full mr-2" 
+                    style={{ backgroundColor: entry.color }}
+                  />
+                  {entry.name}:
                 </span>
-                <span className="text-gray-300 font-semibold">
-                  ${((activeChart === "fees24h" ? data.fees7d : data.fees24h) / 1000000).toFixed(1)}M
+                <span className="text-white font-semibold ml-4">
+                  ${(entry.value / 1000000).toFixed(1)}M
                 </span>
               </div>
-            )}
+            ))}
           </div>
         </div>
       )
@@ -119,73 +93,12 @@ export const Fees = () => {
     return null
   }
 
-  // Handle bar click
-  const handleBarClick = (data: BarClickData) => {
-    const newSelection = selectedProtocol === data.name ? null : data.name
-    setSelectedProtocol(newSelection)
-    
-    // Scroll to the protocol card if selected
-    if (newSelection) {
-      setTimeout(() => {
-        const element = document.getElementById(`protocol-${data.name}`)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }
-      }, 100)
-    }
-  }
-
-  // Get bar color based on state
-  const getBarColor = (entry: ChartData, index: number) => {
-    // Special styling for Raydium entries
-    if (entry.isRaydium) {
-      if (selectedProtocol === entry.name) {
-        return "#F7F3E9" // Cream color when selected
-      }
-      if (hoveredBar === index) {
-        return "#F5F1E7" // Slightly darker cream on hover
-      }
-      return "#F7F3E9" // Default cream color for Raydium
-    }
-    
-    // Standard colors for other protocols
-    if (selectedProtocol === entry.name) {
-      return "#5AC4BE"
-    }
-    if (hoveredBar === index) {
-      return "#4A90E2"
-    }
-    return "#3772FF"
-  }
-
-  // Custom label component for Raydium logo
-  const RaydiumLabel = (props: LabelProps) => {
-    const { x, y, width, height, payload } = props
-    
-    // Check if this is a Raydium entry
-    if (!payload?.isRaydium) {
-      return null
-    }
-    
-    // Ensure we have valid dimensions
-    if (!x || !y || !width || !height) {
-      return null
-    }
-    
-    const logoSize = Math.min(width * 0.6, height * 0.6, 40)
-    const logoX = x + (width - logoSize) / 2
-    const logoY = y + (height - logoSize) / 2
-    
-    return (
-      <image
-        href="/assets/logo/raydium.svg"
-        x={logoX}
-        y={logoY}
-        width={logoSize}
-        height={logoSize}
-        opacity={0.8}
-        style={{ pointerEvents: 'none' }}
-      />
+  // Toggle protocol visibility
+  const toggleProtocol = (protocolName: string) => {
+    setSelectedProtocols(prev => 
+      prev.includes(protocolName) 
+        ? prev.filter(p => p !== protocolName)
+        : [...prev, protocolName]
     )
   }
 
@@ -218,7 +131,7 @@ export const Fees = () => {
       {/* Header */}
       <div className="text-center py-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
         <h1 className="text-4xl font-bold text-white mb-2">Protocol Fees</h1>
-        <p className="text-gray-400">Solana Ecosystem Fee Distribution</p>
+        <p className="text-gray-400">Solana Ecosystem Fee Trends</p>
       </div>
 
       {/* Chart Section */}
@@ -227,62 +140,44 @@ export const Fees = () => {
           {/* Chart Header */}
           <div className="flex flex-col items-stretch border-b border-gray-800 sm:flex-row">
             <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'forwards' }}>
-              <h2 className="text-xl font-bold text-white">Fee Distribution</h2>
-              <p className="text-gray-400">Top protocols by fees collected</p>
+              <h2 className="text-xl font-bold text-white">Fee Trends</h2>
+              <p className="text-gray-400">Protocol fees across time periods</p>
             </div>
             <div className="flex opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
-              {[
-                { key: "fees24h", label: "24h Fees", value: total.fees24h },
-                { key: "fees7d", label: "7d Fees", value: total.fees7d },
-                { key: "fees30d", label: "30d Fees", value: total.fees30d }
-              ].map((chart) => (
-                <button
-                  key={chart.key}
-                  data-active={activeChart === chart.key}
-                  className="data-[active=true]:bg-muted/50 relative z-30 flex flex-1 flex-col justify-center gap-1 border-t border-gray-800 px-6 py-4 text-left even:border-l even:border-gray-800 sm:border-t-0 sm:border-l sm:px-8 sm:py-6 hover:bg-gray-800/50 transition-colors"
-                  onClick={() => setActiveChart(chart.key as "fees24h" | "fees7d" | "fees30d")}
-                >
-                  <span className="text-gray-400 text-xs font-medium">
-                    {chart.label}
-                  </span>
-                  <span className="text-lg leading-none font-bold text-white sm:text-2xl">
-                    ${(chart.value / 1000000).toFixed(1)}M
-                  </span>
-                </button>
-              ))}
+              <div className="flex flex-col justify-center gap-1 border-t border-gray-800 px-6 py-4 text-left sm:border-t-0 sm:border-l sm:px-8 sm:py-6">
+                <span className="text-gray-400 text-xs font-medium">Total 24h Fees</span>
+                <span className="text-lg leading-none font-bold text-white sm:text-2xl">
+                  ${(data.totalFees24h / 1000000).toFixed(1)}M
+                </span>
+              </div>
+              <div className="flex flex-col justify-center gap-1 border-t border-gray-800 px-6 py-4 text-left sm:border-t-0 sm:border-l sm:px-8 sm:py-6">
+                <span className="text-gray-400 text-xs font-medium">Total 7d Fees</span>
+                <span className="text-lg leading-none font-bold text-white sm:text-2xl">
+                  ${(data.totalFees7d / 1000000).toFixed(1)}M
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Chart Container */}
           <div className="p-6 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s', animationFillMode: 'forwards' }}>
-            <div className="h-[400px] w-full">
+            <div className="h-[500px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  data={chartData}
+                <LineChart
+                  data={lineChartData}
                   margin={{
                     top: 20,
                     right: 30,
                     left: 20,
                     bottom: 5,
                   }}
-                  onMouseLeave={() => setHoveredBar(null)}
                 >
-                  <defs>
-                    <linearGradient id="raydiumGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#C200FB" />
-                      <stop offset="48.97%" stopColor="#3772FF" />
-                      <stop offset="100%" stopColor="#5AC4BE" />
-                    </linearGradient>
-                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis
-                    dataKey="displayName"
+                    dataKey="period"
                     axisLine={false}
                     tickLine={false}
                     tick={{ fill: '#9CA3AF', fontSize: 12 }}
-                    angle={-45}
-                    textAnchor="end"
-                    height={80}
                   />
                   <YAxis
                     axisLine={false}
@@ -291,140 +186,101 @@ export const Fees = () => {
                     tickFormatter={(value) => `$${(value / 1000000).toFixed(0)}M`}
                   />
                   <Tooltip content={<CustomTooltip />} />
-                  <Bar
-                    dataKey={activeChart}
-                    radius={[4, 4, 0, 0]}
-                    cursor="pointer"
-                    onClick={handleBarClick}
-                    onMouseEnter={(data, index) => setHoveredBar(index)}
-                  >
-                    {chartData.map((entry, index) => (
-                      <Cell 
-                        key={`cell-${index}`} 
-                        fill={getBarColor(entry, index)}
-                      />
-                    ))}
-                    <LabelList content={RaydiumLabel} />
-                  </Bar>
-                </BarChart>
+                  <Legend />
+                  {topProtocols.map((protocol, index) => (
+                    <Line
+                      key={protocol.name}
+                      type="monotone"
+                      dataKey={protocol.name}
+                      stroke={getProtocolColor(protocol.name, index)}
+                      strokeWidth={protocol.isRaydium ? 3 : 2}
+                      dot={{ 
+                        fill: getProtocolColor(protocol.name, index),
+                        strokeWidth: 2,
+                        r: protocol.isRaydium ? 6 : 4
+                      }}
+                      activeDot={{ 
+                        r: protocol.isRaydium ? 8 : 6,
+                        stroke: getProtocolColor(protocol.name, index),
+                        strokeWidth: 2
+                      }}
+                      hide={selectedProtocols.length > 0 && !selectedProtocols.includes(protocol.name)}
+                    />
+                  ))}
+                </LineChart>
               </ResponsiveContainer>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Protocol Cards Grid */}
-      <div className="px-8 pb-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.5s', animationFillMode: 'forwards' }}>
-        <div className="bg-gray-900/30 backdrop-blur-sm rounded-2xl border border-gray-800 shadow-2xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-white">All Protocols</h2>
-                <p className="text-gray-400">Complete list of protocols by fees collected</p>
-              </div>
-              {selectedProtocol && (
-                <button
-                  onClick={() => setSelectedProtocol(null)}
-                  className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-white rounded-lg transition-all duration-200 text-sm opacity-0 animate-fade-in"
-                  style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}
-                >
-                  Clear Selection
-                </button>
-              )}
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {data.protocols.map((protocol, index) => (
-              <div
-                key={protocol.id}
-                id={`protocol-${protocol.name}`}
-                className={`
-                  p-4 border-gray-800 hover:bg-gray-800/30 transition-all duration-200 cursor-pointer
-                  opacity-0 animate-fade-in-up hover:scale-105
-                  ${index % 4 !== 3 ? 'border-r' : ''}
-                  ${index < data.protocols.length - 4 ? 'border-b' : ''}
-                  ${selectedProtocol === protocol.name ? 'bg-gradient-to-r from-[#C200FB]/10 via-[#3772FF]/10 to-[#5AC4BE]/10 border-[#5AC4BE]/50 scale-102' : ''}
-                  ${protocol.isRaydium ? 'bg-gradient-to-r from-[#C200FB]/5 via-[#3772FF]/5 to-[#5AC4BE]/5' : ''}
-                `}
-                style={{ 
-                  animationDelay: `${0.7 + (index * 0.05)}s`, 
-                  animationFillMode: 'forwards' 
-                }}
-                onClick={() => setSelectedProtocol(selectedProtocol === protocol.name ? null : protocol.name)}
-              >
-                <div className="flex flex-col space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3 className={`font-semibold text-sm truncate transition-colors ${
-                      selectedProtocol === protocol.name ? 'text-[#5AC4BE]' : 
-                      protocol.isRaydium ? 'text-[#F7F3E9]' : 'text-white'
-                    }`}>
-                      {protocol.name}
+      {/* Protocol Cards */}
+      <div className="px-8 pb-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {topProtocols.map((protocol, index) => (
+            <div
+              key={protocol.id}
+              id={`protocol-${protocol.name}`}
+              className={`bg-gray-900/50 backdrop-blur-sm rounded-xl border transition-all duration-300 hover:scale-105 cursor-pointer ${
+                protocol.isRaydium 
+                  ? 'border-[#5AC4BE]/50 hover:border-[#5AC4BE] hover:shadow-lg hover:shadow-[#5AC4BE]/20' 
+                  : 'border-gray-700 hover:border-gray-600'
+              } ${
+                selectedProtocols.includes(protocol.name) ? 'ring-2 ring-blue-500' : ''
+              }`}
+              onClick={() => toggleProtocol(protocol.name)}
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div 
+                      className="w-4 h-4 rounded-full" 
+                      style={{ backgroundColor: getProtocolColor(protocol.name, index) }}
+                    />
+                    <h3 className={`font-bold text-lg ${protocol.isRaydium ? 'text-[#F7F3E9]' : 'text-white'}`}>
+                      {protocol.displayName}
                     </h3>
-                    <div className="flex items-center gap-2">
-                      {selectedProtocol === protocol.name && (
-                        <div className="w-2 h-2 bg-[#5AC4BE] rounded-full animate-pulse opacity-0 animate-fade-in" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}></div>
-                      )}
-                      {protocol.isRaydium && (
-                        <div className="w-2 h-2 bg-[#F7F3E9] rounded-full animate-pulse"></div>
-                      )}
-                      <span className={`text-xs px-2 py-1 rounded transition-colors ${
-                        selectedProtocol === protocol.name 
-                          ? 'text-[#5AC4BE] bg-[#5AC4BE]/20' 
-                          : protocol.isRaydium
-                          ? 'text-[#F7F3E9] bg-[#F7F3E9]/20'
-                          : 'text-gray-400 bg-gray-800'
-                      }`}>
-                        #{index + 1}
-                      </span>
-                    </div>
                   </div>
-                  
-                  <div className="space-y-1">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-400">24h Fees</span>
-                      <span className="text-sm font-medium text-white">
-                        ${(protocol.total24h / 1000000).toFixed(1)}M
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-400">7d Fees</span>
-                      <span className="text-sm font-medium text-[#5AC4BE]">
-                        ${(protocol.total7d / 1000000).toFixed(1)}M
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-400">30d Fees</span>
-                      <span className="text-sm font-medium text-gray-300">
-                        ${(protocol.total30d / 1000000).toFixed(1)}M
-                      </span>
-                    </div>
-                    
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-400">24h Change</span>
-                      <span className={`text-sm font-medium ${
-                        protocol.change_1d >= 0 ? 'text-green-400' : 'text-red-400'
-                      }`}>
-                        {protocol.change_1d >= 0 ? '+' : ''}{protocol.change_1d.toFixed(1)}%
-                      </span>
-                    </div>
+                  {protocol.isRaydium && (
+                    <Image 
+                      src="/assets/logo/raydium.svg" 
+                      alt="Raydium" 
+                      width={32}
+                      height={32}
+                      className="opacity-80"
+                    />
+                  )}
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">24h Fees:</span>
+                    <span className="text-white font-semibold">
+                      ${(protocol.total24h / 1000000).toFixed(2)}M
+                    </span>
                   </div>
-                  
-                  <div className="flex items-center justify-between pt-2">
-                    <span className={`text-xs px-2 py-1 rounded ${
-                      protocol.isRaydium 
-                        ? 'text-[#F7F3E9] bg-[#F7F3E9]/20' 
-                        : 'text-gray-500 bg-gray-800/50'
-                    }`}>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">7d Fees:</span>
+                    <span className="text-white font-semibold">
+                      ${(protocol.total7d / 1000000).toFixed(2)}M
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">30d Fees:</span>
+                    <span className="text-white font-semibold">
+                      ${(protocol.total30d / 1000000).toFixed(2)}M
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Category:</span>
+                    <span className="text-[#5AC4BE] text-sm font-medium">
                       {protocol.category}
                     </span>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

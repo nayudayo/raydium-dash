@@ -1,31 +1,5 @@
 import { useState, useEffect } from 'react';
-
-export interface RevenueProtocol {
-  id: string;
-  name: string;
-  displayName: string;
-  category: string;
-  logo: string;
-  total24h: number;
-  total7d: number;
-  total30d: number;
-  total1y: number;
-  totalAllTime: number;
-  change_1d: number;
-  change_7d: number;
-  change_1m: number;
-  module: string;
-  chains: string[];
-  isRaydium: boolean;
-}
-
-export interface RevenueData {
-  protocols: RevenueProtocol[];
-  totalRevenue24h: number;
-  totalRevenue7d: number;
-  totalRevenue30d: number;
-  totalRevenue1y: number;
-}
+import { RawRevenueProtocol, RevenueProtocol, RevenueData } from '../types';
 
 export const useRevenueData = () => {
   const [data, setData] = useState<RevenueData | null>(null);
@@ -41,7 +15,7 @@ export const useRevenueData = () => {
           throw new Error('Failed to fetch revenue data');
         }
         
-        const rawData: any[] = await response.json();
+        const rawData = await response.json() as RawRevenueProtocol[];
         
         // Process and sort by 24h revenue
         const protocols: RevenueProtocol[] = rawData
@@ -64,7 +38,7 @@ export const useRevenueData = () => {
             chains: protocol.chains,
             isRaydium: protocol.name.toLowerCase().includes('raydium') || 
                       protocol.parentProtocol === 'parent#raydium' ||
-                      protocol.slug?.includes('raydium')
+                      (protocol.slug?.includes('raydium') ?? false)
           }))
           .sort((a, b) => b.total24h - a.total24h);
         

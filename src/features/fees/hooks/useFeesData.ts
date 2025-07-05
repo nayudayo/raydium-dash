@@ -1,31 +1,5 @@
 import { useState, useEffect } from 'react';
-
-export interface FeesProtocol {
-  id: string;
-  name: string;
-  displayName: string;
-  category: string;
-  logo: string;
-  total24h: number;
-  total7d: number;
-  total30d: number;
-  total1y: number;
-  totalAllTime: number;
-  change_1d: number;
-  change_7d: number;
-  change_1m: number;
-  module: string;
-  chains: string[];
-  isRaydium: boolean;
-}
-
-export interface FeesData {
-  protocols: FeesProtocol[];
-  totalFees24h: number;
-  totalFees7d: number;
-  totalFees30d: number;
-  totalFees1y: number;
-}
+import { RawFeesProtocol, FeesProtocol, FeesData } from '../types';
 
 export const useFeesData = () => {
   const [data, setData] = useState<FeesData | null>(null);
@@ -41,7 +15,7 @@ export const useFeesData = () => {
           throw new Error('Failed to fetch fees data');
         }
         
-        const rawData: any[] = await response.json();
+        const rawData = await response.json() as RawFeesProtocol[];
         
         // Process and sort by 24h fees
         const protocols: FeesProtocol[] = rawData
@@ -64,7 +38,8 @@ export const useFeesData = () => {
             chains: protocol.chains,
             isRaydium: protocol.name.toLowerCase().includes('raydium') || 
                       protocol.parentProtocol === 'parent#raydium' ||
-                      protocol.slug?.includes('raydium')
+                      (protocol.slug?.includes('raydium') ?? false),
+            latestFetchIsOk: protocol.latestFetchIsOk
           }))
           .sort((a, b) => b.total24h - a.total24h);
         

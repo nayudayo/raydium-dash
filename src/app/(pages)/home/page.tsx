@@ -1,4 +1,4 @@
-import FlowingMenu from "@/features/home/Selection";
+import FlowingMenu from "@/components/home/Selection";
 
 const menuItems = [
   {

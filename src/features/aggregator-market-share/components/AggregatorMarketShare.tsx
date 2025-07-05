@@ -24,26 +24,6 @@ interface ChartData {
   isRaydium: boolean;
 }
 
-interface BarClickData {
-  name: string;
-  volume: number;
-  displayName: string;
-  isRaydium: boolean;
-}
-
-interface LabelProps {
-  x?: number;
-  y?: number;
-  width?: number;
-  height?: number;
-  payload?: {
-    name: string;
-    volume: number;
-    displayName: string;
-    isRaydium: boolean;
-  };
-}
-
 export const AggregatorMarketShare = () => {
   const { data, loading, error, getChartData } = useAggregatorData()
   const [hoveredBar, setHoveredBar] = React.useState<number | null>(null)
@@ -97,14 +77,17 @@ export const AggregatorMarketShare = () => {
   }
 
   // Handle bar click
-  const handleBarClick = (data: BarClickData) => {
-    const newSelection = selectedProtocol === data.name ? null : data.name
+  const handleBarClick = (data: { name?: string }) => {
+    const protocolName = data.name
+    if (!protocolName) return
+    
+    const newSelection = selectedProtocol === protocolName ? null : protocolName
     setSelectedProtocol(newSelection)
     
     // Scroll to the protocol card if selected
     if (newSelection) {
       setTimeout(() => {
-        const element = document.getElementById(`protocol-${data.name}`)
+        const element = document.getElementById(`protocol-${protocolName}`)
         if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
@@ -136,7 +119,7 @@ export const AggregatorMarketShare = () => {
   }
 
   // Custom label component for Raydium logo
-  const RaydiumLabel = (props: LabelProps) => {
+  const RaydiumLabel = (props: { x?: string | number; y?: string | number; width?: string | number; height?: string | number; payload?: { isRaydium?: boolean } }) => {
     const { x, y, width, height, payload } = props
     
     // Check if this is a Raydium entry
@@ -149,9 +132,14 @@ export const AggregatorMarketShare = () => {
       return null
     }
     
-    const logoSize = Math.min(width * 0.6, height * 0.6, 40)
-    const logoX = x + (width - logoSize) / 2
-    const logoY = y + (height - logoSize) / 2
+    const numX = typeof x === 'string' ? parseFloat(x) : x
+    const numY = typeof y === 'string' ? parseFloat(y) : y
+    const numWidth = typeof width === 'string' ? parseFloat(width) : width
+    const numHeight = typeof height === 'string' ? parseFloat(height) : height
+    
+    const logoSize = Math.min(numWidth * 0.6, numHeight * 0.6, 40)
+    const logoX = numX + (numWidth - logoSize) / 2
+    const logoY = numY + (numHeight - logoSize) / 2
     
     return (
       <image
