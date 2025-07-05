@@ -1,4 +1,5 @@
-import FlowingMenu from "@/components/home/Selection";
+import Navbar from "@/components/home/Navbar";
+import PageContent from "@/components/home/PageContent";
 
 const menuItems = [
   {
@@ -31,7 +32,8 @@ const menuItems = [
 export default function HomePage() {
   return (
     <div className="w-full h-screen bg-black">
-      <FlowingMenu items={menuItems} />
+      <Navbar items={menuItems} />
+      <PageContent />
     </div>
   );
 }

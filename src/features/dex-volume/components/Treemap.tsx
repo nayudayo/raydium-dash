@@ -18,7 +18,7 @@ interface TreemapProps {
   height?: number;
 }
 
-export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
+export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const { data, loading, error, totalVolume } = useDexData();
 
@@ -229,9 +229,9 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const name = d.data.displayName || d.data.name;
-        return rectWidth > 80 && rectHeight > 30 ? (name.length > 12 ? name.substring(0, 12) + '...' : name) : "";
+        return rectWidth > 60 && rectHeight > 25 ? (name.length > 10 ? name.substring(0, 10) + '...' : name) : "";
       })
-      .attr("font-size", "12px")
+      .attr("font-size", "11px")
       .attr("fill", d => d.data.name === "Raydium AMM" ? "#000000" : "white")
       .attr("font-weight", "700")
       .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 2px rgba(0, 0, 0, 0.8)")
@@ -248,17 +248,17 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
     // Add volume labels with fade-in animation
     const volumeLabels = leaf.append("text")
       .attr("x", 8)
-      .attr("y", 36)
+      .attr("y", 34)
       .text(d => {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const volume = d.value || 0;
-        if (rectWidth > 100 && rectHeight > 50) {
+        if (rectWidth > 80 && rectHeight > 40) {
           return volume >= 1000000 ? `$${(volume / 1000000).toFixed(1)}M` : `$${(volume / 1000).toFixed(0)}K`;
         }
         return "";
       })
-      .attr("font-size", "10px")
+      .attr("font-size", "9px")
       .attr("fill", d => d.data.name === "Raydium AMM" ? "#333333" : "rgba(255, 255, 255, 0.8)")
       .attr("font-weight", "600")
       .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 2px rgba(0, 0, 0, 0.8)")
@@ -275,17 +275,17 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
     // Add change indicators with fade-in animation
     const changeLabels = leaf.append("text")
       .attr("x", 8)
-      .attr("y", 50)
+      .attr("y", 46)
       .text(d => {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const change = d.data.change_1d;
-        if (rectWidth > 120 && rectHeight > 60 && change !== undefined) {
+        if (rectWidth > 100 && rectHeight > 50 && change !== undefined) {
           return `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`;
         }
         return "";
       })
-      .attr("font-size", "9px")
+      .attr("font-size", "8px")
       .attr("fill", d => {
         const change = d.data.change_1d;
         if (change === undefined) {
@@ -315,23 +315,23 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
       .attr("href", "/assets/logo/raydium.svg")
       .attr("x", d => {
         const rectWidth = d.x1 - d.x0;
-        const logoSize = Math.min(rectWidth * 0.8, 180);
+        const logoSize = Math.min(rectWidth * 0.6, 120);
         return (rectWidth - logoSize) / 2;
       })
       .attr("y", d => {
         const rectHeight = d.y1 - d.y0;
-        const logoSize = Math.min(rectHeight * 0.8, 180);
+        const logoSize = Math.min(rectHeight * 0.6, 120);
         return (rectHeight - logoSize) / 2;
       })
       .attr("width", d => {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
-        return Math.min(rectWidth * 0.8, rectHeight * 0.8, 180);
+        return Math.min(rectWidth * 0.6, rectHeight * 0.6, 120);
       })
       .attr("height", d => {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
-        return Math.min(rectWidth * 0.8, rectHeight * 0.8, 180);
+        return Math.min(rectWidth * 0.6, rectHeight * 0.6, 120);
       })
       .style("pointer-events", "none")
       .style("opacity", 0);
@@ -351,7 +351,7 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
 
   if (loading) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-900 rounded-lg">
+      <div className="w-full h-full flex items-center justify-center bg-[#060010] rounded-lg">
         <div className="text-white text-lg">Loading DEX volume data...</div>
       </div>
     );
@@ -359,7 +359,7 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
 
   if (error) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-900 rounded-lg">
+      <div className="w-full h-full flex items-center justify-center bg-[#060010] rounded-lg">
         <div className="text-red-400 text-lg">Error: {error}</div>
       </div>
     );
@@ -367,7 +367,7 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
 
   if (!data) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-900 rounded-lg">
+      <div className="w-full h-full flex items-center justify-center bg-[#060010] rounded-lg">
         <div className="text-white text-lg">No data available</div>
       </div>
     );
@@ -376,17 +376,13 @@ export default function Treemap({ width = 1000, height = 700 }: TreemapProps) {
   return (
     <svg
       ref={svgRef}
-      width={width}
-      height={height}
-      className="block"
+      className="w-full h-full"
       style={{ 
-        background: '#060010',
-        width: '100vw',
-        height: '100vh',
-        maxWidth: '100%',
-        maxHeight: '100%'
+        background: 'transparent',
+        display: 'block'
       }}
       viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMidYMid meet"
     />
   );
 } 
