@@ -15,7 +15,7 @@ import { useAggregatorData } from '../../features/aggregator-market-share/hooks/
 
 const GridLayout: React.FC = () => {
   // Get data from all hooks
-  const { totalVolume: dexVolume, topProtocols: dexProtocols } = useDexData();
+  const { totalVolume: dexVolume, /*topProtocols: dexProtocols */ } = useDexData();
   const { data: tvlData } = useTVL();
   const { data: revenueData } = useRevenueData();
   const { data: feesData } = useFeesData();
@@ -31,16 +31,15 @@ const GridLayout: React.FC = () => {
   const totalEcosystemVolume = dexVolume + totalAggregatorVolume;
 
   // Calculate active protocols count
-  const activeProtocolsCount = (dexProtocols.length || 0) + 
+  /*const activeProtocolsCount = (dexProtocols.length || 0) + 
                               (tvlData?.protocols.length || 0) + 
                               (revenueData?.protocols.length || 0) + 
                               (feesData?.protocols.length || 0) + 
                               (aggregatorData?.protocols.length || 0);
-
   // Calculate health score based on data availability and positive trends
   const dataSourcesActive = [dexVolume > 0, totalTVL > 0, totalRevenue24h > 0, totalFees24h > 0].filter(Boolean).length;
   const healthScore = dataSourcesActive >= 3 ? 'Excellent' : dataSourcesActive >= 2 ? 'Good' : 'Fair';
-
+*/
   return (
     <div className="w-full min-h-screen bg-black p-8 space-y-3">
       

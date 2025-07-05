@@ -31,7 +31,7 @@ export const AggregatorMarketShareCard: React.FC = () => {
   const topProtocols = getTopProtocols(17);
   
   // Prepare chart data
-  const chartData = topProtocols.map((protocol, index) => ({
+  const chartData = topProtocols.map((protocol) => ({
     name: protocol.displayName,
     volume: protocol.volume,
     percentage: ((protocol.volume / data.totalVolume) * 100).toFixed(1),
