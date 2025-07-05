@@ -170,8 +170,8 @@ export const TVL = () => {
       <div className="w-full min-h-screen bg-[#060010] text-white">
         {/* Header */}
         <div className="text-center py-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'forwards' }}>
-          <h1 className="text-4xl font-bold text-white mb-2 font-serif">Total Value Locked</h1>
-          <p className="text-gray-400 font-serif">Solana Ecosystem TVL Distribution</p>
+          <h1 className="text-4xl font-bold text-white mb-2">Total Value Locked</h1>
+          <p className="text-gray-400">Solana Ecosystem TVL Distribution</p>
         </div>
 
               {/* Chart Section */}

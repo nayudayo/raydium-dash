@@ -52,8 +52,8 @@ export default function DexVolumePage() {
       <div className="flex-1 flex items-center justify-center flex-col">
         {/* Title */}
         <div className="text-center mb-4">
-          <h1 className="text-4xl font-bold text-white mb-2 font-serif">DEX Volume</h1>
-          <p className="text-gray-400 font-serif">Solana Ecosystem Trading Volume Distribution</p>
+          <h1 className="text-4xl font-bold text-white mb-2">DEX Volume</h1>
+          <p className="text-gray-400">Solana Ecosystem Trading Volume Distribution</p>
         </div>
 
         <div 
