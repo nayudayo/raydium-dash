@@ -1,0 +1,594 @@
+[
+  {
+    "id": "214",
+    "name": "Raydium AMM",
+    "symbol": "RAY",
+    "category": "Dexs",
+    "tvl": 1719936936.40812,
+    "chainTvls": {
+      "Solana": 1719936936.40812
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#raydium"
+  },
+  {
+    "id": "4148",
+    "name": "Meteora DLMM",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 553493830.536319,
+    "chainTvls": {
+      "Solana": 553493830.536319
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#meteora"
+  },
+  {
+    "id": "2769",
+    "name": "PancakeSwap AMM V3",
+    "symbol": "CAKE",
+    "category": "Dexs",
+    "tvl": 437331596.121588,
+    "chainTvls": {
+      "Solana": 3028707.96430035
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#pancakeswap"
+  },
+  {
+    "id": "283",
+    "name": "Orca",
+    "symbol": "ORCA",
+    "category": "Dexs",
+    "tvl": 353164081.271043,
+    "chainTvls": {
+      "Solana": 343887370.017523
+    },
+    "mcap": 116066163.654419,
+    "gecko_id": "orca"
+  },
+  {
+    "id": "4368",
+    "name": "Sanctum Infinity",
+    "symbol": "CLOUD",
+    "category": "Dexs",
+    "tvl": 186632060.557775,
+    "chainTvls": {
+      "Solana": 186632060.557775
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#sanctum"
+  },
+  {
+    "id": "5936",
+    "name": "PumpSwap",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 147125025.21205,
+    "chainTvls": {
+      "Solana": 147125025.21205
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#pump"
+  },
+  {
+    "id": "385",
+    "name": "Meteora DAMM V1",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 68390674.3456051,
+    "chainTvls": {
+      "Solana": 68390674.3456051
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#meteora"
+  },
+  {
+    "id": "6250",
+    "name": "Saros DLMM",
+    "symbol": "SAROS",
+    "category": "Dexs",
+    "tvl": 29893652.1765743,
+    "chainTvls": {
+      "Solana": 29893652.1765743
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#saros"
+  },
+  {
+    "id": "5711",
+    "name": "Perena",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 24514854.9310698,
+    "chainTvls": {
+      "Solana": 24514854.9310698
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "3686",
+    "name": "Lifinity V2",
+    "symbol": "LFNTY",
+    "category": "Dexs",
+    "tvl": 23612919.7289483,
+    "chainTvls": {
+      "Solana": 22973496.087248
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#lifinity"
+  },
+  {
+    "id": "145",
+    "name": "Serum",
+    "symbol": "SRM",
+    "category": "Dexs",
+    "tvl": 18212725.2865132,
+    "chainTvls": {
+      "Solana": 18212725.2865132
+    },
+    "mcap": 4367304.31523819,
+    "gecko_id": "serum"
+  },
+  {
+    "id": "3053",
+    "name": "FluxBeam",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 17071083.0809152,
+    "chainTvls": {
+      "Solana": 17071083.0809152
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "419",
+    "name": "Saber",
+    "symbol": "SBR",
+    "category": "Dexs",
+    "tvl": 16552007.4763499,
+    "chainTvls": {
+      "Solana": 16552007.4763499
+    },
+    "mcap": 2416072.08333724,
+    "gecko_id": "saber"
+  },
+  {
+    "id": "448",
+    "name": "Balanced Exchange",
+    "symbol": "BALN",
+    "category": "Dexs",
+    "tvl": 15005136.4781951,
+    "chainTvls": {
+      "Solana": 258324.416525479
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#balanceddao"
+  },
+  {
+    "id": "3170",
+    "name": "Phoenix",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 8483570.07027502,
+    "chainTvls": {
+      "Solana": 8483570.07027502
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2117",
+    "name": "DOOAR",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 7601664.60618845,
+    "chainTvls": {
+      "Solana": 6630859.95716794
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "6368",
+    "name": "Byreal",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 6005582.0263207,
+    "chainTvls": {
+      "Solana": 6005582.0263207
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "4734",
+    "name": "stabble",
+    "symbol": "STB",
+    "category": "Dexs",
+    "tvl": 3002807.89219245,
+    "chainTvls": {
+      "Solana": 3002807.89219245
+    },
+    "mcap": 817402.03295224,
+    "gecko_id": "stabble"
+  },
+  {
+    "id": "1788",
+    "name": "Invariant",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 2739495.15136707,
+    "chainTvls": {
+      "Solana": 187531.650579744
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "1262",
+    "name": "Saros AMM",
+    "symbol": "SAROS",
+    "category": "Dexs",
+    "tvl": 2680231.82259373,
+    "chainTvls": {
+      "Solana": 2680231.82259373
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#saros"
+  },
+  {
+    "id": "4790",
+    "name": "Bridgers",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 2010108.47638458,
+    "chainTvls": {
+      "Solana": 0
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "5349",
+    "name": "Manifest Trade",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 1342466.9846895,
+    "chainTvls": {
+      "Solana": 1342466.9846895
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "653",
+    "name": "Atrix",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 1172145.74859337,
+    "chainTvls": {
+      "Solana": 1172145.74859337
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2322",
+    "name": "OpenBook",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 1145745.14314966,
+    "chainTvls": {
+      "Solana": 1145745.14314966
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2822",
+    "name": "Bonkswap",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 1113933.32428135,
+    "chainTvls": {
+      "Solana": 1113933.32428135
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "739",
+    "name": "Aldrin",
+    "symbol": "RIN",
+    "category": "Dexs",
+    "tvl": 652835.870902182,
+    "chainTvls": {
+      "Solana": 652835.870902182
+    },
+    "mcap": null,
+    "gecko_id": "aldrin"
+  },
+  {
+    "id": "6246",
+    "name": "Skate AMM",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 505132.937688362,
+    "chainTvls": {
+      "Solana": 32407.4393521623
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "5998",
+    "name": "GooseFX V2",
+    "symbol": "GOFX",
+    "category": "Dexs",
+    "tvl": 504524.613549926,
+    "chainTvls": {
+      "Solana": 504524.613549926
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#goosefx"
+  },
+  {
+    "id": "284",
+    "name": "Serum Swap",
+    "symbol": "SRM",
+    "category": "Dexs",
+    "tvl": 261383.484709792,
+    "chainTvls": {
+      "Solana": 261383.484709792
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "5050",
+    "name": "DeltaTrade",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 188381.372221179,
+    "chainTvls": {
+      "Solana": 43162.0159395879
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "4572",
+    "name": "GuacSwap",
+    "symbol": "GUAC",
+    "category": "Dexs",
+    "tvl": 179416.414914645,
+    "chainTvls": {
+      "Solana": 179416.414914645
+    },
+    "mcap": 2244698.82952455,
+    "gecko_id": "guacamole"
+  },
+  {
+    "id": "1412",
+    "name": "Crema Finance",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 175903.031300414,
+    "chainTvls": {
+      "Solana": 175903.031300414
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "1410",
+    "name": "Cropper AMM",
+    "symbol": "CRP",
+    "category": "Dexs",
+    "tvl": 150771.718557153,
+    "chainTvls": {
+      "Solana": 150771.718557153
+    },
+    "mcap": null,
+    "gecko_id": "cropperfinance",
+    "parent": "parent#cropper"
+  },
+  {
+    "id": "4517",
+    "name": "1INTRO",
+    "symbol": "INTRO",
+    "category": "Dexs",
+    "tvl": 110589.372349547,
+    "chainTvls": {
+      "Solana": 110589.372349547
+    },
+    "mcap": null,
+    "gecko_id": "1intro"
+  },
+  {
+    "id": "1197",
+    "name": "Sentre",
+    "symbol": "SNTR",
+    "category": "Dexs",
+    "tvl": 98555.9006432372,
+    "chainTvls": {
+      "Solana": 98555.9006432372
+    },
+    "mcap": 19217375.2320055,
+    "gecko_id": "sentre"
+  },
+  {
+    "id": "4604",
+    "name": "Cropper CLMM",
+    "symbol": "CRP",
+    "category": "Dexs",
+    "tvl": 96612.3944296294,
+    "chainTvls": {
+      "Solana": 96612.3944296294
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#cropper"
+  },
+  {
+    "id": "2154",
+    "name": "Lifinity V1",
+    "symbol": "LFNTY",
+    "category": "Dexs",
+    "tvl": 84441.4026197891,
+    "chainTvls": {
+      "Solana": 84441.4026197891
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#lifinity"
+  },
+  {
+    "id": "1156",
+    "name": "Cykura",
+    "symbol": "CYS",
+    "category": "Dexs",
+    "tvl": 29130.2579972771,
+    "chainTvls": {
+      "Solana": 29130.2579972771
+    },
+    "mcap": null,
+    "gecko_id": "cykura"
+  },
+  {
+    "id": "1575",
+    "name": "Penguin",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 26969.5756282725,
+    "chainTvls": {
+      "Solana": 26969.5756282725
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "4310",
+    "name": "Dradex",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 2036.27150682618,
+    "chainTvls": {
+      "Solana": 2036.27150682618
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2059",
+    "name": "Goat Swap",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 1597.12505295102,
+    "chainTvls": {
+      "Solana": 1597.12505295102
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2194",
+    "name": "Beluga Protocol",
+    "symbol": "Beluga",
+    "category": "Dexs",
+    "tvl": 302.38681465544,
+    "chainTvls": {
+      "Solana": 302.38681465544
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "5858",
+    "name": "Spice",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 180.795404475016,
+    "chainTvls": {
+      "Solana": 180.795404475016
+    },
+    "mcap": null,
+    "gecko_id": null
+  },
+  {
+    "id": "2175",
+    "name": "GooseFX V1",
+    "symbol": "GOFX",
+    "category": "Dexs",
+    "tvl": 46.7357624386846,
+    "chainTvls": {
+      "Solana": 46.7357624386846
+    },
+    "mcap": null,
+    "gecko_id": null,
+    "parent": "parent#goosefx",
+    "deprecated": true
+  },
+  {
+    "id": "1393",
+    "name": "Basis Markets",
+    "symbol": "BASIS",
+    "category": "Dexs",
+    "tvl": 0,
+    "chainTvls": {
+      "Solana": 0
+    },
+    "mcap": 0,
+    "gecko_id": "basis-markets"
+  },
+  {
+    "id": "1509",
+    "name": "Solanax",
+    "symbol": "SOLD",
+    "category": "Dexs",
+    "tvl": 0,
+    "chainTvls": {
+      "Solana": 0
+    },
+    "mcap": 61511.0190279728,
+    "gecko_id": "solanax"
+  },
+  {
+    "id": "1965",
+    "name": "Drachma Exchange",
+    "symbol": "DRA",
+    "category": "Dexs",
+    "tvl": 0,
+    "chainTvls": {
+      "Solana": 0
+    },
+    "mcap": null,
+    "gecko_id": "drachma-exchange"
+  },
+  {
+    "id": "4268",
+    "name": "Clone Protocol",
+    "symbol": "-",
+    "category": "Dexs",
+    "tvl": 0,
+    "chainTvls": {
+      "Solana": 0
+    },
+    "mcap": null,
+    "gecko_id": null
+  }
+]

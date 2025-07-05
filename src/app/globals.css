@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../styles/marquee.css";
 
 :root {
   --background: #ffffff;
@@ -23,4 +24,67 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide scrollbars for webkit browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for Firefox */
+html {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbars for IE and Edge */
+body {
+  -ms-overflow-style: none;
+}
+
+/* Fade in up animation for performance cards */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out;
+}
+
+/* Simple fade in animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Scale up animation for selected cards */
+@keyframes scale-up {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.02);
+  }
+}
+
+.animate-scale-up {
+  animation: scale-up 0.2s ease-out;
 }

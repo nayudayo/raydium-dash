@@ -1,0 +1,27 @@
+/* Marquee Animation Styles */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  animation: marquee 15s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause animation on hover for better UX */
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+} 
