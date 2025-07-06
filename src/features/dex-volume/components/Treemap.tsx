@@ -148,13 +148,13 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .attr("opacity", d => opacityScale(d.value || 0));
 
     // Add hover interactions with our theme colors
-    rects.on("mouseover", function(event, d) {
+    rects.on("mouseover", function(event: MouseEvent, d: TreemapNode) {
         d3.select(this)
           .transition()
           .duration(200)
           .attr("opacity", 1)
-          .attr("stroke", d => d.data.name === "Raydium AMM" ? "url(#raydiumGradient)" : "none")
-          .attr("stroke-width", d => d.data.name === "Raydium AMM" ? 4 : 0);
+          .attr("stroke", d.data.name === "Raydium AMM" ? "url(#raydiumGradient)" : "none")
+          .attr("stroke-width", d.data.name === "Raydium AMM" ? 4 : 0);
         
         tooltip.transition()
           .duration(200)
@@ -209,7 +209,7 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
             .style("top", top + "px");
         }
       })
-      .on("mouseout", function(event, d) {
+      .on("mouseout", function(event: MouseEvent, d: TreemapNode) {
         d3.select(this)
           .transition()
           .duration(200)
