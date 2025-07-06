@@ -45,28 +45,29 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
 
     const treemapRoot = treemap(root) as TreemapNode;
 
-    // Enhanced color scale - gray for all, cream for Raydium AMM
+    // Enhanced color scale - using our theme colors
     const getProtocolColor = (protocolName: string) => {
       if (protocolName === "Raydium AMM") {
-        return "#F7F3E9"; // Cream color
+        return "#F7F3E9"; // Cream color for Raydium
       }
-      return "#4A5568"; // Gray for all others
+      // Use different shades of our theme colors for variety
+      return "#1A1A2E"; // Dark purple-blue background
     };
 
-    // Get border color for Raydium AMM
+    // Get border color for protocols
     const getBorderColor = (protocolName: string) => {
       if (protocolName === "Raydium AMM") {
-        return "url(#raydiumGradient)"; // Gradient border
+        return "url(#raydiumGradient)"; // Gradient border for Raydium
       }
-      return "rgba(255, 255, 255, 0.1)"; // Default border
+      return "none"; // No border for others
     };
 
-    // Get border width for Raydium AMM
+    // Get border width for protocols
     const getBorderWidth = (protocolName: string) => {
       if (protocolName === "Raydium AMM") {
         return 3; // Thicker border for Raydium
       }
-      return 1; // Default border width
+      return 0; // No border for others
     };
 
     // Opacity scale based on value
@@ -95,20 +96,20 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .attr("offset", "100%")
       .attr("stop-color", "#5AC4BE");
 
-    // Create tooltip with enhanced styling
+    // Create tooltip with enhanced styling matching our theme
     const tooltip = d3.select("body").append("div")
       .attr("class", "dex-treemap-tooltip")
       .style("opacity", 0)
       .style("position", "absolute")
       .style("background", "rgba(6, 0, 16, 0.95)")
-      .style("color", "white")
+      .style("color", "#F7F3E9")
       .style("padding", "16px")
       .style("border-radius", "12px")
       .style("font-size", "13px")
       .style("font-weight", "500")
-      .style("border", "1px solid rgba(255, 255, 255, 0.1)")
+      .style("border", "1px solid #3772FF")
       .style("backdrop-filter", "blur(10px)")
-      .style("box-shadow", "0 8px 32px rgba(0, 0, 0, 0.3)")
+      .style("box-shadow", "0 8px 32px rgba(55, 114, 255, 0.2)")
       .style("pointer-events", "none")
       .style("z-index", "1000");
 
@@ -146,14 +147,14 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .ease(d3.easeQuadOut)
       .attr("opacity", d => opacityScale(d.value || 0));
 
-    // Add hover interactions
+    // Add hover interactions with our theme colors
     rects.on("mouseover", function(event, d) {
         d3.select(this)
           .transition()
           .duration(200)
           .attr("opacity", 1)
-          .attr("stroke", "rgba(255, 255, 255, 0.4)")
-          .attr("stroke-width", 2);
+          .attr("stroke", d => d.data.name === "Raydium AMM" ? "url(#raydiumGradient)" : "none")
+          .attr("stroke-width", d => d.data.name === "Raydium AMM" ? 4 : 0);
         
         tooltip.transition()
           .duration(200)
@@ -165,10 +166,10 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
         const change7d = d.data.change_7d;
         
         tooltip.html(`
-          <div style="font-weight: 700; margin-bottom: 8px; font-size: 14px;">${d.data.displayName || d.data.name}</div>
-          <div style="color: rgba(255, 255, 255, 0.8); margin-bottom: 4px;">Category: ${d.data.category}</div>
-          <div style="color: rgba(255, 255, 255, 0.8); margin-bottom: 4px;">24h Volume: $${volume.toLocaleString()}</div>
-          <div style="color: rgba(255, 255, 255, 0.8); margin-bottom: 4px;">Market Share: ${marketShare}%</div>
+          <div style="font-weight: 700; margin-bottom: 8px; font-size: 14px; color: #F7F3E9;">${d.data.displayName || d.data.name}</div>
+          <div style="color: #5AC4BE; margin-bottom: 4px;">Category: ${d.data.category}</div>
+          <div style="color: #F7F3E9; margin-bottom: 4px;">24h Volume: $${volume.toLocaleString()}</div>
+          <div style="color: #5AC4BE; margin-bottom: 4px;">Market Share: ${marketShare}%</div>
           ${change1d !== undefined ? `<div style="color: ${change1d >= 0 ? '#4ECDC4' : '#FF6B6B'}; margin-bottom: 4px;">24h Change: ${change1d >= 0 ? '+' : ''}${change1d.toFixed(2)}%</div>` : ''}
           ${change7d !== undefined ? `<div style="color: ${change7d >= 0 ? '#4ECDC4' : '#FF6B6B'};">7d Change: ${change7d >= 0 ? '+' : ''}${change7d.toFixed(2)}%</div>` : ''}
         `);
@@ -221,7 +222,7 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
           .style("opacity", 0);
       });
 
-    // Add protocol name labels with fade-in animation
+    // Add protocol name labels with our theme colors
     const nameLabels = leaf.append("text")
       .attr("x", 8)
       .attr("y", 20)
@@ -229,12 +230,16 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const name = d.data.displayName || d.data.name;
+        // Special handling for pump.fun to always show its name
+        if (d.data.name === "pump.fun") {
+          return name.length > 8 ? name.substring(0, 8) + '...' : name;
+        }
         return rectWidth > 60 && rectHeight > 25 ? (name.length > 10 ? name.substring(0, 10) + '...' : name) : "";
       })
       .attr("font-size", "11px")
-      .attr("fill", d => d.data.name === "Raydium AMM" ? "#000000" : "white")
+      .attr("fill", d => d.data.name === "Raydium AMM" ? "#060010" : "#F7F3E9")
       .attr("font-weight", "700")
-      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 2px rgba(0, 0, 0, 0.8)")
+      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 3px rgba(6, 0, 16, 0.8)")
       .style("pointer-events", "none")
       .style("opacity", 0);
 
@@ -245,7 +250,7 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .ease(d3.easeQuadOut)
       .style("opacity", 1);
 
-    // Add volume labels with fade-in animation
+    // Add volume labels with our theme colors
     const volumeLabels = leaf.append("text")
       .attr("x", 8)
       .attr("y", 34)
@@ -253,15 +258,19 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const volume = d.value || 0;
+        // Special handling for pump.fun to always show its volume
+        if (d.data.name === "pump.fun") {
+          return volume >= 1000000 ? `$${(volume / 1000000).toFixed(1)}M` : `$${(volume / 1000).toFixed(0)}K`;
+        }
         if (rectWidth > 80 && rectHeight > 40) {
           return volume >= 1000000 ? `$${(volume / 1000000).toFixed(1)}M` : `$${(volume / 1000).toFixed(0)}K`;
         }
         return "";
       })
       .attr("font-size", "9px")
-      .attr("fill", d => d.data.name === "Raydium AMM" ? "#333333" : "rgba(255, 255, 255, 0.8)")
+      .attr("fill", d => d.data.name === "Raydium AMM" ? "#3772FF" : "#5AC4BE")
       .attr("font-weight", "600")
-      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 2px rgba(0, 0, 0, 0.8)")
+      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 3px rgba(6, 0, 16, 0.8)")
       .style("pointer-events", "none")
       .style("opacity", 0);
 
@@ -272,7 +281,7 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .ease(d3.easeQuadOut)
       .style("opacity", 1);
 
-    // Add change indicators with fade-in animation
+    // Add change indicators with our theme colors
     const changeLabels = leaf.append("text")
       .attr("x", 8)
       .attr("y", 46)
@@ -280,6 +289,10 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
         const rectWidth = d.x1 - d.x0;
         const rectHeight = d.y1 - d.y0;
         const change = d.data.change_1d;
+        // Special handling for pump.fun to always show its change
+        if (d.data.name === "pump.fun" && change !== undefined) {
+          return `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`;
+        }
         if (rectWidth > 100 && rectHeight > 50 && change !== undefined) {
           return `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`;
         }
@@ -289,16 +302,13 @@ export default function Treemap({ width = 800, height = 300 }: TreemapProps) {
       .attr("fill", d => {
         const change = d.data.change_1d;
         if (change === undefined) {
-          return d.data.name === "Raydium AMM" ? "#666666" : "rgba(255, 255, 255, 0.6)";
+          return d.data.name === "Raydium AMM" ? "#666666" : "#5AC4BE";
         }
-        // For Raydium AMM, use darker colors; for others, use the original bright colors
-        if (d.data.name === "Raydium AMM") {
-          return change >= 0 ? "#0D7377" : "#B91C1C"; // Dark teal for positive, dark red for negative
-        }
-        return change >= 0 ? "#4ECDC4" : "#FF6B6B"; // Original bright colors
+        // Use consistent colors for all protocols
+        return change >= 0 ? "#4ECDC4" : "#FF6B6B";
       })
       .attr("font-weight", "600")
-      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 2px rgba(0, 0, 0, 0.8)")
+      .attr("text-shadow", d => d.data.name === "Raydium AMM" ? "none" : "0 1px 3px rgba(6, 0, 16, 0.8)")
       .style("pointer-events", "none")
       .style("opacity", 0);
 

@@ -44,10 +44,10 @@ const GridLayout: React.FC = () => {
     <div className="w-full min-h-screen bg-black p-8 space-y-3">
       
       {/* Main Layout - Overview left, Treemap center, TVL+Aggregator right */}
-      <div className="grid grid-cols-16 gap-3 h-[calc(80vh-4rem)]">
+      <div className="grid grid-cols-16 gap-3 h-[calc(80vh-4rem)] opacity-0 animate-[fadeIn_0.8s_ease-out_0.2s_forwards]">
         
         {/* Left Column - DEX Analytics Overview */}
-        <div className="col-span-2">
+        <div className="col-span-2 opacity-0 animate-[fadeIn_0.8s_ease-out_0.4s_forwards]">
           <div className="grid grid-cols-1 grid-rows-5 gap-3 h-full">
             <div className="bg-gradient-to-br from-[#C200FB]/20 via-[#3772FF]/20 to-[#5AC4BE]/20 border border-[#5AC4BE]/50 p-5 hover:from-[#C200FB]/30 hover:via-[#3772FF]/30 hover:to-[#5AC4BE]/30 transition-all duration-300">
               <div className="text-lg text-[#F7F3E9] font-semibold tracking-wide">DEX ANALYTICS</div>
@@ -73,12 +73,12 @@ const GridLayout: React.FC = () => {
         </div>
 
         {/* Center Column - DEX Volume Treemap */}
-        <div className="col-span-10">
+        <div className="col-span-10 opacity-0 animate-[fadeIn_0.8s_ease-out_0.6s_forwards]">
           <DexVolumeCard />
         </div>
 
         {/* Right Column - TVL and Aggregator Market Share stacked */}
-        <div className="col-span-4 flex flex-col gap-3">
+        <div className="col-span-4 flex flex-col gap-3 opacity-0 animate-[fadeIn_0.8s_ease-out_0.8s_forwards]">
           
           {/* TVL Section (Top) */}
           <div className="flex-1">
@@ -93,21 +93,23 @@ const GridLayout: React.FC = () => {
       </div>
 
       {/* Bottom Section - Revenue & Fees */}
-      <div className="mt-20 grid grid-cols-2 gap-3 h-[calc(55vh-4rem)]">
+      <div className="mt-20 grid grid-cols-2 gap-3 h-[calc(55vh-4rem)] opacity-0 animate-[fadeIn_0.8s_ease-out_1.0s_forwards]">
         
         {/* Revenue Section */}
-        <div>
+        <div className="opacity-0 animate-[fadeIn_0.8s_ease-out_1.2s_forwards]">
           <RevenueCard />
         </div>
 
         {/* Fees Section */}
-        <div>
+        <div className="opacity-0 animate-[fadeIn_0.8s_ease-out_1.4s_forwards]">
           <FeesCard />
         </div>
       </div>
 
       {/* Protocols Section */}
-      <Protocols />
+      <div className="opacity-0 animate-[fadeIn_0.8s_ease-out_1.6s_forwards]">
+        <Protocols />
+      </div>
     </div>
   );
 };

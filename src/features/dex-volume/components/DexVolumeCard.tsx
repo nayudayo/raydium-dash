@@ -62,10 +62,10 @@ export const DexVolumeCard: React.FC = () => {
           {/* Header */}
           <div className="flex-shrink-0 mb-4">
             <div className="text-2xl text-white font-bold tracking-wide mb-2 group-hover:text-[#F7F3E9] transition-colors">
-              DEX VOLUME TREEMAP
+              DEX VOLUME
             </div>
             <div className="text-sm text-[#3772FF] uppercase tracking-wider group-hover:text-[#5AC4BE] transition-colors">
-              Interactive Volume Visualization
+              Volume Visualized
             </div>
             <div className="text-3xl text-white font-bold mt-2 group-hover:text-[#F7F3E9] transition-colors">
               {formatVolume(totalVolume)}
