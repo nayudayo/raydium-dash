@@ -32,7 +32,7 @@ interface ProtocolData {
 
 const Navbar: React.FC<NavbarProps> = ({ items }) => {
   // Initialize all items as active (true) by default
-  const [itemStates, setItemStates] = useState<Record<string, boolean>>(
+  const [/*itemStates,*/ /*setItemStates*/] = useState<Record<string, boolean>>(
     items.reduce((acc, item) => {
       acc[item.link] = true; // Default to active
       return acc;
@@ -132,12 +132,12 @@ const Navbar: React.FC<NavbarProps> = ({ items }) => {
       .slice(0, 15); // Take top 15 protocols for marquee
   }, [aggregatorData, tvlData, revenueData, feesData, dexData]);
 
-  const handleToggle = (link: string) => {
-    setItemStates(prev => ({
-      ...prev,
-      [link]: !prev[link]
-    }));
-  };
+  // const handleToggle = (link: string) => {
+  //   setItemStates(prev => ({
+  //     ...prev,
+  //     [link]: !prev[link]
+  //   }));
+  // };
 
   const formatValue = (value: number) => {
     if (value >= 1000000) {
