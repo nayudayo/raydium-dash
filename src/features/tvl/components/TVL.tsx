@@ -242,16 +242,7 @@ export const TVL = () => {
         </div>
       </div>
 
-      {/* Debug Section - Remove this after testing */}
-      <div className="px-8 mb-4">
-        <div className="bg-gray-800/50 rounded-lg p-4">
-          <h3 className="text-white font-bold mb-2">Debug Info:</h3>
-          <div className="text-gray-300 text-sm">
-            <p>Protocols with multi-chain TVL: {stackedBarData.filter(p => p.hasMultiChain).length}</p>
-            <p>Sample data: {JSON.stringify(stackedBarData.slice(0, 2), null, 2)}</p>
-          </div>
-        </div>
-      </div>
+
 
       {/* Protocol Cards */}
       <div className="px-8 pb-8 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s', animationFillMode: 'forwards' }}>

@@ -40,7 +40,7 @@ export const TVLCard: React.FC = () => {
     );
   }
 
-  const topProtocols = getTopProtocols(6);
+  const topProtocols = getTopProtocols(10);
   const solanaPercentage = ((data.solanaTVL / data.totalTVL) * 100).toFixed(1);
 
   // Prepare chart data
